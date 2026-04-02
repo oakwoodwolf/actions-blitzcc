@@ -1,0 +1,32 @@
+name: "Blitz3D Build Action"
+description: "Reusable GitHub Action for compiling Blitz3D projects"
+
+inputs:
+  source:
+    description: "Main Blitz3D source file"
+    required: true
+
+  output:
+    description: "Output executable path"
+    required: true
+
+  include_runtime:
+    description: "Copy runtime DLLs"
+    required: false
+    default: "true"
+
+  media_dir:
+    description: "Optional media folder to copy"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - shell: pwsh
+      run: |
+        & "${{ github.action_path }}/scripts/build.ps1" `
+          "${{ inputs.source }}" `
+          "${{ inputs.output }}" `
+          "${{ inputs.include_runtime }}" `
+          "${{ inputs.media_dir }}"
