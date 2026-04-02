@@ -8,6 +8,7 @@ param(
 Write-Host "Setting up Blitz3D compiler..."
 
 $compilerPath = "$env:RUNNER_TEMP\blitz3d"
+$env:blitzpath = $compilerPath
 
 New-Item -ItemType Directory -Force -Path $compilerPath | Out-Null
 
