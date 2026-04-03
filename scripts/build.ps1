@@ -66,6 +66,8 @@ if ($media_dir -ne "") {
 
 Write-Host "Build completed successfully."
 
+
+
 git config user.name "github-actions"
 git config user.email "actions@github.com"
 
@@ -76,3 +78,4 @@ git tag "$env:GAME_VERSION"
 
 git push
 git push origin "$env:GAME_VERSION"
+echo "GAME_VERSION=$env:GAME_VERSION" >> $env:GITHUB_ENV
