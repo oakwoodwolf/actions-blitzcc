@@ -14,6 +14,34 @@ New-Item -ItemType Directory -Force -Path $compilerPath | Out-Null
 
 Copy-Item "$env:GITHUB_ACTION_PATH\blitz3d\*" $compilerPath -Recurse -Force
 
+$content = Get-Content $source -Raw
+
+$pattern = 'Global\s+GAME_VERSION_TAG\$="(\d+)\.(\d+)\.(\d+)\.Beta(\d+)"'
+
+if ($content -match $pattern) {
+
+    $major = [int]$matches[1]
+    $minor = [int]$matches[2]
+    $patch = [int]$matches[3]
+    $beta  = [int]$matches[4] + 1
+
+    $newVersion = "$major.$minor.$patch.Beta$beta"
+
+    $newLine = "Global GAME_VERSION_TAG$=`"$newVersion`""
+
+    $content = [regex]::Replace($content, $pattern, $newLine)
+
+    Set-Content $source $content
+
+    Write-Host "Version bumped to $newVersion"
+
+    $env:GAME_VERSION = $newVersion
+}
+else {
+    throw "GAME_VERSION_TAG not found."
+}
+
+
 Write-Host "Compiling $source"
 
 $outputDir = Split-Path $output
