@@ -44,7 +44,7 @@ else {
 
 Write-Host "Compiling $source"
 
-$outputDir = Split-Path $output
+$outputDir = Split-Path $output -Parent
 
 New-Item -ItemType Directory -Force -Path $outputDir | Out-Null
 
