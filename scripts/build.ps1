@@ -65,3 +65,14 @@ if ($media_dir -ne "") {
 }
 
 Write-Host "Build completed successfully."
+
+git config user.name "github-actions"
+git config user.email "actions@github.com"
+
+git add $source
+git commit -m "Auto bump version to $env:GAME_VERSION"
+
+git tag "$env:GAME_VERSION"
+
+git push
+git push origin "$env:GAME_VERSION"
