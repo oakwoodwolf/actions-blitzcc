@@ -12,11 +12,11 @@ $compile_output = & "$compiler_path\bin\blitzcc.exe" -q -c "`"$source`""
 if ($LASTEXITCODE -ne 0) {
     $lastLine = $compile_output[-1]
     if ($lastLine -match '(.*?)(?::(\d+)):(\d+):(.+)$') {
-        $sourceFile = [System.IO.Path]::GetRelativePath($env:GITHUB_WORKSPACE, ($matches[1] -replace '\\', '/'))
+        $sourceFile = ($matches[1] -replace '\\', '/')
         $lineNumber = $matches[2]
         $colNumber = $matches[3]
         $errorMessage = $matches[4]
-        Write-Host "::error file=$sourceFile,line=$lineNumber,col=$colNumber:: $sourceFile $errorMessage"
+        Write-Host "::error file=$sourceFile,line=$lineNumber,col=$colNumber:: $errorMessage"
     }
     else {
         Write-Host "::error::$lastLine"

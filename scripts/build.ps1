@@ -49,7 +49,7 @@ $compile_output =& "$compiler_path\bin\blitzcc.exe" -o "$name.exe" "`"$source`""
 if ($LASTEXITCODE -ne 0) {
     $lastLine = $compile_output[-1]
     if ($lastLine -match '(.*?)(?::(\d+)):(\d+):(.+)$') {
-        $sourceFile = $matches[1]
+        $sourceFile = ($matches[1] -replace '\\', '/')
         $lineNumber = $matches[2]
         $colNumber = $matches[3]
         $errorMessage = $matches[4]
