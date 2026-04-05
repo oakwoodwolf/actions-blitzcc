@@ -53,9 +53,9 @@ if ($LASTEXITCODE -ne 0) {
         $lineNumber = $matches[2]
         $colNumber = $matches[3]
         $endLine = $matches[4]
-        $endCol = $matches[5]
+        $endColumn = $matches[5]
         $errorMessage = $matches[6]
-        Write-Host "::error file=$sourceFile line=$lineNumber col=$colNumber endLine=$endLine endCol=$endCol:: $errorMessage"
+        Write-Host "::error file=$sourceFile line=$lineNumber col=$colNumber endLine=$endLine endColumn=$endCol:: $errorMessage"
     }
     else {
         Write-Host "::error::$lastLine"
