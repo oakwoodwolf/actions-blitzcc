@@ -7,7 +7,7 @@ if (-not (Test-Path $source)) {
     throw "Source file not found: $source"
 }
 Write-Host "Running: & `"$compiler_path\bin\blitzcc.exe`" -q -c `"$source`""
-& "$compiler_path\bin\blitzcc.exe" -q -c "`"$source`""
+$compileOutput = & "$compiler_path\bin\blitzcc.exe" -q -c "`"$source`""
 
 if ($LASTEXITCODE -ne 0) {
     $file = Split-Path $source -Leaf
