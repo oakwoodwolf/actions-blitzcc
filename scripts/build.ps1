@@ -2,20 +2,9 @@ param(
     [string]$source,
     [string]$output,
     [string]$name,
-    [string]$bump_version
+    [string]$bump_version.
+    [string]$compiler_path
 )
-
-Write-Host "Setting up Blitz3D compiler..."
-
-$compilerPath = "$env:RUNNER_TEMP\blitz3d"
-$env:blitzpath = $compilerPath
-
-New-Item -ItemType Directory -Force -Path $compilerPath | Out-Null
-
-Copy-Item "$env:GITHUB_ACTION_PATH\blitz3d\*" $compilerPath -Recurse -Force
-if (-not (Test-Path "$compilerPath\bin\blitzcc.exe")) {
-    throw "Blitz3D compiler not found at: $compilerPath\bin\blitzcc.exe"
-}
 
 if ($bump_version -ne "") {
     Write-Host "Bumping version in $source..."
@@ -53,11 +42,11 @@ Write-Host "Output directory: $output"
 
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 
-Write-Host "Running: & `"$compilerPath\bin\blitzcc.exe`" `"$source`" -o `"$name`""
-& "$compilerPath\bin\blitzcc.exe" -o "$name.exe" "`"$source`"" 
+Write-Host "Running: & `"$compiler_path\bin\blitzcc.exe`" -o `"$name`" `"$source`""
+& "$compiler_path\bin\blitzcc.exe" -o "$name.exe" "`"$source`"" 
 
 if ($LASTEXITCODE -ne 0) {
-    throw "Blitz3D compilation failed."
+    throw "Blitz3D compilation failed. Exit code: $LASTEXITCODE"
 }
 
 Write-Host "Checking for executable..."

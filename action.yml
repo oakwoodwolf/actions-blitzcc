@@ -17,11 +17,22 @@ inputs:
     description: "Whether to bump the version number (true/false)"
     required: false
     default: ""
+  step:
+    description: "Type of build step (build, release, etc.)"
+    required: false
+    default: "build"
 
 runs:
   using: "composite"
   steps:
+    - name: "Set up Blitz3D Build Environment"
+      if: always()
+      id: blitzcc-setup
+      shell: pwsh
+      run: |
+        & "${{ github.action_path }}/scripts/setup.ps1" `
     - name: "Build Blitz3D Project"
+      if: ${{ inputs.step == 'build' }}
       shell: pwsh
       run: |
         & "${{ github.action_path }}/scripts/build.ps1" `
@@ -29,3 +40,4 @@ runs:
           "${{ inputs.output }}" `
           "${{ inputs.name }}" `
           "${{ inputs.bump_version }}" `
+          "${{ steps.blitzcc-setup.outputs.compiler_path }}"
