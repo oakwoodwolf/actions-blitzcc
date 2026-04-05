@@ -31,6 +31,13 @@ runs:
       shell: pwsh
       run: |
         & "${{ github.action_path }}/scripts/setup.ps1" `
+    - name: "Check for Errors"
+      if: ${{ inputs.step == 'test' }}
+      shell: pwsh
+      run: |
+        & "${{ github.action_path }}/scripts/test.ps1" `
+          "${{ inputs.source }}" `
+          "${{ steps.blitzcc-setup.outputs.compiler_path }}"
     - name: "Build Blitz3D Project"
       if: ${{ inputs.step == 'build' }}
       shell: pwsh
