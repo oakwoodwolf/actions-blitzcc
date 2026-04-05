@@ -44,9 +44,22 @@ Write-Host "Output directory: $output"
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 
 Write-Host "Running: & `"$compiler_path\bin\blitzcc.exe`" -o `"$name`" `"$source`""
-& "$compiler_path\bin\blitzcc.exe" -o "$name.exe" "`"$source`"" 
+$compile_output =& "$compiler_path\bin\blitzcc.exe" -o "$name.exe" "`"$source`"" 
 
 if ($LASTEXITCODE -ne 0) {
+    $lastLine = $compile_output[-1]
+    if ($lastLine -match '(.*?)(?::(\d+)):(\d+):(\d+):(\d+):(.+)$') {
+        $sourceFile = $matches[1]
+        $lineNumber = $matches[2]
+        $colNumber = $matches[3]
+        $endLine = $matches[4]
+        $endCol = $matches[5]
+        $errorMessage = $matches[6]
+        Write-Host "::error file=$sourceFile line=$lineNumber col=$colNumber endLine=$endLine endCol=$endCol:: $errorMessage"
+    }
+    else {
+        Write-Host "::error::$lastLine"
+    }
     throw "Blitz3D compilation failed. Exit code: $LASTEXITCODE"
 }
 
