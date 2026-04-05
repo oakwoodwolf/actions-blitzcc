@@ -2,7 +2,7 @@ param(
     [string]$source,
     [string]$output,
     [string]$name,
-    [string]$bump_version.
+    [string]$bump_version,
     [string]$compiler_path
 )
 
