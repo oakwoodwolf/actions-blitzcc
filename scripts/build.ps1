@@ -48,14 +48,12 @@ $compile_output =& "$compiler_path\bin\blitzcc.exe" -o "$name.exe" "`"$source`""
 
 if ($LASTEXITCODE -ne 0) {
     $lastLine = $compile_output[-1]
-    if ($lastLine -match '(.*?)(?::(\d+)):(\d+):(\d+):(\d+):(.+)$') {
+    if ($lastLine -match '(.*?)(?::(\d+)):(\d+):(.+)$') {
         $sourceFile = $matches[1]
         $lineNumber = $matches[2]
         $colNumber = $matches[3]
-        $endLine = $matches[4]
-        $endColumn = $matches[5]
-        $errorMessage = $matches[6]
-        Write-Host "::error file=$sourceFile line=$lineNumber col=$colNumber endLine=$endLine endColumn=$endCol:: $errorMessage"
+        $errorMessage = $matches[4]
+        Write-Host "::error file=$sourceFile line=$lineNumber col=$colNumber:: $errorMessage"
     }
     else {
         Write-Host "::error::$lastLine"
