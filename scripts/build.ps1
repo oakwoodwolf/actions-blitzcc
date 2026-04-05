@@ -5,6 +5,7 @@ param(
     [string]$bump_version,
     [string]$compiler_path
 )
+$env:blitzpath = $compiler_path
 
 if ($bump_version -ne "") {
     Write-Host "Bumping version in $source..."
