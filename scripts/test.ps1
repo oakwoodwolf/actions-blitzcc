@@ -6,8 +6,8 @@ $env:blitzpath = $compiler_path
 if (-not (Test-Path $source)) {
     throw "Source file not found: $source"
 }
-Write-Host "Running: & `"$compiler_path\bin\blitzcc.exe`" -c `"$source`""
-& "$compiler_path\bin\blitzcc.exe" -c "`"$source`""
+Write-Host "Running: & `"$compiler_path\bin\blitzcc.exe`" -q -c `"$source`""
+& "$compiler_path\bin\blitzcc.exe" -q -c "`"$source`""
 
 if ($LASTEXITCODE -ne 0) {
     $file = Split-Path $source -Leaf
