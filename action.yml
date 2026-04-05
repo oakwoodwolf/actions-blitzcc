@@ -5,7 +5,6 @@ inputs:
   source:
     description: "Main Blitz3D source file, including file extension"
     required: true
-
   output:
     description: "Output folder"
     required: false
@@ -22,7 +21,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - shell: pwsh
+    - name: "Build Blitz3D Project"
+      shell: pwsh
       run: |
         & "${{ github.action_path }}/scripts/build.ps1" `
           "${{ inputs.source }}" `

@@ -69,31 +69,20 @@ if (-not (Test-Path "$name.exe")) {
     throw "Compilation succeeded but $name.exe not found at: $output"
 }
 Copy-Item "$name.exe" $output -Force
-
 Write-Host "Executable created at: $output"
-if ($include_runtime -eq "true") {
-    Write-Host "Copying userlibraries to $output"
-    Copy-Item "$compilerPath\bin\B3D-AS.dll" $output -Force
-    Copy-Item "$compilerPath\bin\Blitzcord.dll" $output -Force
-    Copy-Item "$compilerPath\bin\discord_game_sdk.dll" $output -Force
-}
-
-if ($media_dir -ne "") {
-    Copy-Item $media_dir "$output\$media_dir" -Recurse -Force
-}
-
 Write-Host "Build completed successfully."
 
 
+if ($bump_version -ne "") {
+    git config user.name "github-actions"
+    git config user.email "actions@github.com"
 
-git config user.name "github-actions"
-git config user.email "actions@github.com"
+    git add $source
+    git commit -m "Auto bump version to $env:GAME_VERSION"
 
-git add $source
-git commit -m "Auto bump version to $env:GAME_VERSION"
+    git tag "$env:GAME_VERSION"
 
-git tag "$env:GAME_VERSION"
-
-git push
-git push origin "$env:GAME_VERSION"
-echo "GAME_VERSION=$env:GAME_VERSION" >> $env:GITHUB_ENV
+    git push
+    git push origin "$env:GAME_VERSION"
+    echo "GAME_VERSION=$env:GAME_VERSION" >> $env:GITHUB_ENV
+}
