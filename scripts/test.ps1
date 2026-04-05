@@ -16,7 +16,7 @@ if ($LASTEXITCODE -ne 0) {
         $lineNumber = $matches[2]
         $colNumber = $matches[3]
         $errorMessage = $matches[4]
-        Write-Host "::error file=$sourceFile,line=$lineNumber,col=$colNumber::$errorMessage"
+        Write-Host "::error file=$sourceFile,line=$lineNumber,col=$colNumber:: $sourceFile $errorMessage"
     }
     else {
         Write-Host "::error::$lastLine"
