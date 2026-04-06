@@ -14,6 +14,7 @@ Write-Host "Copying userlibraries into the Blitz3D path..."
 $dllFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.dll -File
 
 if ($dllFiles.Count -gt 0) {
+    Write-Host "Copying DLLs: $($dllFiles.Name -join ', ')"
     Copy-Item $dllFiles.FullName -Destination "$compilerPath\bin" -Force
     Copy-Item $dllFiles.FullName -Destination "$compilerPath\userlibs" -Force
 }
@@ -24,10 +25,11 @@ else {
 $declFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.decls -File
 
 if ($declFiles.Count -eq 0) {
+    Write-Host "Copying .decls files: $($declFiles.Name -join ', ')"
     Write-Host "::warning::No .decls files found in repository root. Does your project include any Blitz3D user libraries?"
 }
 else {
-    Write-Host "Copying .decl files to Blitz3D userlibs..."
+    Write-Host "Copying .decls files to Blitz3D userlibs..."
     $declFiles | ForEach-Object {
         Copy-Item $_.FullName -Destination "$compilerPath\userlibs" -Force
     }
