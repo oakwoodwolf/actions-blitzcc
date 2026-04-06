@@ -39,7 +39,7 @@ if ($declFiles.Count -gt 0) {
     }
 }
 else {
-        Write-Host "::warning::No .decls files found in repository root. Does your project include any Blitz3D user libraries?"
+        Write-Host "::warning::No .decls files found in repository root $env:GITHUB_WORKSPACE/$userlib_path. Does your project include any Blitz3D user libraries?"
 }
 
 Write-Output "compiler_path=$($compilerPath)" >> $Env:GITHUB_OUTPUT
