@@ -11,9 +11,15 @@ if (-not (Test-Path "$compilerPath\bin\blitzcc.exe")) {
 }
 
 Write-Host "Copying userlibraries into the Blitz3D path..."
-Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.dll -File |
-    Copy-Item -Destination "$compilerPath\bin" -Force
-    Copy-Item -Destination "$compilerPath\userlibs" -Force
+$dllFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.dll -File
+
+if ($dllFiles.Count -gt 0) {
+    Copy-Item $dllFiles.FullName -Destination "$compilerPath\bin" -Force
+    Copy-Item $dllFiles.FullName -Destination "$compilerPath\userlibs" -Force
+}
+else {
+    Write-Host "::warning::No .dll files found in repository root. Does your project include any Blitz3D user libraries?"
+}
 
 $declFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.decl -File
 
@@ -22,7 +28,9 @@ if ($declFiles.Count -eq 0) {
 }
 else {
     Write-Host "Copying .decl files to Blitz3D userlibs..."
-    $declFiles | Copy-Item -Destination "$compilerPath\userlibs" -Force
+    $declFiles | ForEach-Object {
+        Copy-Item $_.FullName -Destination "$compilerPath\userlibs" -Force
+    }
 }
 
 Write-Output "compiler_path=$($compilerPath)" >> $Env:GITHUB_OUTPUT
