@@ -31,6 +31,9 @@ else {
     Write-Host "Copying .decls files: $($declFiles.Name -join ', ')"
     $declFiles | ForEach-Object {
         Copy-Item $_.FullName -Destination "$compilerPath\userlibs" -Force
+        if (-not (Test-Path "$compilerPath\userlibs\$($_.Name)")) {
+            Write-Host "::warning::Failed to copy .decls file: $compilerPath\userlibs\$($_.Name)"
+        }
     }
 }
 
