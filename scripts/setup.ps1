@@ -1,3 +1,6 @@
+param(
+    [string]$userlib_path
+)
 Write-Host "Setting up Blitz3D compiler..."
 
 $compilerPath = "$env:RUNNER_TEMP\blitz3d"
@@ -17,24 +20,22 @@ $dllFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.dll -File
 
 if ($dllFiles.Count -gt 0) {
     Write-Host "Copying DLLs: $($dllFiles.Name -join ', ')"
-    Copy-Item $dllFiles.FullName -Destination "$compilerPath\bin" -Force
-    Copy-Item $dllFiles.FullName -Destination "$compilerPath\userlibs" -Force
+    foreach ($file in $dllFiles) {
+        Copy-Item $file.FullName -Destination "$compilerPath\bin" -Force
+        Copy-Item $file.FullName -Destination "$compilerPath\userlibs" -Force
+    }
 }
 else {
     Write-Host "::warning::No .dll files found in repository root. Does your project include any Blitz3D user libraries?"
 }
 
-$declFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.decls -File
+$declFiles = Get-ChildItem -Path "$env:GITHUB_WORKSPACE/$userlib_path" -Filter *.decls -File
 
 if ($declFiles.Count -gt 0) {
     Write-Host "Copying .decls files: $($declFiles.Name -join ', ')"
 
     foreach ($file in $declFiles) {
         Copy-Item $file.FullName -Destination "$compilerPath\userlibs" -Force
-
-        if (-not (Test-Path (Join-Path "$compilerPath\userlibs" $file.Name))) {
-            Write-Host "::warning::Failed to copy .decls file: $($file.Name)"
-        }
     }
 }
 else {

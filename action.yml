@@ -17,6 +17,10 @@ inputs:
     description: "Whether to bump the version number (true/false)"
     required: false
     default: ""
+  userlib_path:
+    description: "Path to user libraries"
+    required: false
+    default: ""
   step:
     description: "Type of build step (build, release, etc.)"
     required: false
@@ -31,6 +35,7 @@ runs:
       shell: pwsh
       run: |
         & "${{ github.action_path }}/scripts/setup.ps1" `
+          "${{ inputs.userlib_path }}"
     - name: "Check for Errors"
       if: ${{ inputs.step == 'test' }}
       shell: pwsh
