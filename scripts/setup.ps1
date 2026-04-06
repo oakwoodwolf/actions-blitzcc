@@ -6,6 +6,8 @@ $env:blitzpath = $compilerPath
 New-Item -ItemType Directory -Force -Path $compilerPath | Out-Null
 
 Copy-Item "$env:GITHUB_ACTION_PATH\blitz3d\*" $compilerPath -Recurse -Force
+New-Item -ItemType Directory -Force -Path "$compilerPath\userlibs" | Out-Null
+
 if (-not (Test-Path "$compilerPath\bin\blitzcc.exe")) {
     throw "Blitz3D compiler not found at: $compilerPath\bin\blitzcc.exe"
 }
@@ -24,17 +26,19 @@ else {
 
 $declFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.decls -File
 
-if ($declFiles.Count -eq 0) {
-    Write-Host "::warning::No .decls files found in repository root. Does your project include any Blitz3D user libraries?"
-}
-else {
+if ($declFiles.Count -gt 0) {
     Write-Host "Copying .decls files: $($declFiles.Name -join ', ')"
-    $declFiles | ForEach-Object {
-        Copy-Item $_.FullName -Destination "$compilerPath\userlibs" -Force
-        if (-not (Test-Path "$compilerPath\userlibs\$($_.Name)")) {
-            Write-Host "::warning::Failed to copy .decls file: $compilerPath\userlibs\$($_.Name)"
+
+    foreach ($file in $declFiles) {
+        Copy-Item $file.FullName -Destination "$compilerPath\userlibs" -Force
+
+        if (-not (Test-Path (Join-Path "$compilerPath\userlibs" $file.Name))) {
+            Write-Host "::warning::Failed to copy .decls file: $($file.Name)"
         }
     }
+}
+else {
+        Write-Host "::warning::No .decls files found in repository root. Does your project include any Blitz3D user libraries?"
 }
 
 Write-Output "compiler_path=$($compilerPath)" >> $Env:GITHUB_OUTPUT
