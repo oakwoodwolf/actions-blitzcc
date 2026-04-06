@@ -25,11 +25,10 @@ else {
 $declFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.decls -File
 
 if ($declFiles.Count -eq 0) {
-    Write-Host "Copying .decls files: $($declFiles.Name -join ', ')"
     Write-Host "::warning::No .decls files found in repository root. Does your project include any Blitz3D user libraries?"
 }
 else {
-    Write-Host "Copying .decls files to Blitz3D userlibs..."
+    Write-Host "Copying .decls files: $($declFiles.Name -join ', ')"
     $declFiles | ForEach-Object {
         Copy-Item $_.FullName -Destination "$compilerPath\userlibs" -Force
     }
