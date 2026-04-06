@@ -21,10 +21,10 @@ else {
     Write-Host "::warning::No .dll files found in repository root. Does your project include any Blitz3D user libraries?"
 }
 
-$declFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.decl -File
+$declFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.decls -File
 
 if ($declFiles.Count -eq 0) {
-    Write-Host "::warning::No .decl files found in repository root. Does your project include any Blitz3D user libraries?"
+    Write-Host "::warning::No .decls files found in repository root. Does your project include any Blitz3D user libraries?"
 }
 else {
     Write-Host "Copying .decl files to Blitz3D userlibs..."
