@@ -13,7 +13,7 @@ Write-Host "Output directory: $output"
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 
 Write-Host "Running: & `"$compiler_path\bin\blitzcc.exe`" -o `"$name`" `"$source`""
-$compile_output =& "$compiler_path\bin\blitzcc.exe" -o "$name.exe" "`"$source`"" 
+$compile_output =& "$compiler_path\bin\blitzcc.exe" -o "$name.exe" "`"$source`"" 2>&1
 
 if ($LASTEXITCODE -ne 0) {
     $lastLine = $compile_output[-1]
