@@ -13,10 +13,6 @@ inputs:
     description: "Name of the built executable, excluding file extension"
     required: true
     default: "build"
-  bump_version:
-    description: "Whether to bump the version number (true/false)"
-    required: false
-    default: ""
   userlib_path:
     description: "Path to user libraries"
     required: false
@@ -51,5 +47,4 @@ runs:
           "${{ inputs.source }}" `
           "${{ inputs.output }}" `
           "${{ inputs.name }}" `
-          "${{ inputs.bump_version }}" `
           "${{ steps.blitzcc-setup.outputs.compiler_path }}"
