@@ -14,6 +14,9 @@ New-Item -ItemType Directory -Force -Path "$compilerPath\userlibs" | Out-Null
 if (-not (Test-Path "$compilerPath\bin\blitzcc.exe")) {
     throw "Blitz3D compiler not found at: $compilerPath\bin\blitzcc.exe"
 }
+if (-not (Test-Path "$compilerPath\bin\release.dll")) {
+    throw "Blitz3D runtime not found at: $compilerPath\bin\release.dll"
+}
 
 Write-Host "Copying userlibraries into the Blitz3D path..."
 $dllFiles = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.dll -File
