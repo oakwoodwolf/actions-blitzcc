@@ -14,8 +14,8 @@ New-Item -ItemType Directory -Force -Path "$compilerPath\userlibs" | Out-Null
 if (-not (Test-Path "$compilerPath\bin\blitzcc.exe")) {
     throw "Blitz3D compiler not found at: $compilerPath\bin\blitzcc.exe"
 }
-if (-not (Test-Path "$compilerPath\bin\release.dll")) {
-    throw "Blitz3D runtime not found at: $compilerPath\bin\release.dll"
+if (-not (Test-Path "$compilerPath\bin\runtime.dll")) {
+    throw "Blitz3D runtime not found at: $compilerPath\bin\runtime.dll"
 }
 
 Write-Host "Copying userlibraries into the Blitz3D path..."
