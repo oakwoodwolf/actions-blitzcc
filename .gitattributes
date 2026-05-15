@@ -1,6 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-# Binary files
+# Binary files - must not have line ending conversion
 *.dll binary
 *.exe binary
+*.b3d binary
